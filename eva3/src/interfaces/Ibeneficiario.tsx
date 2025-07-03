@@ -1,4 +1,4 @@
-export interface IBeneficiario{
+export interface Beneficiario{
     nombre:string,
     edad:number,
     genero:string,
