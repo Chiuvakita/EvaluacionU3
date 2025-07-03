@@ -1,9 +1,12 @@
 'use Client'
+import FormularioBeneficiario from "../components/FormularioBeneficiario";
 
 export default function Home() {
+
   return (
-    <form>
-      <h1>Bienvenido</h1>
-    </form>
+  <div>
+    <h1>Formulario Beneficiarios</h1>
+    <FormularioBeneficiario/>
+  </div>
   );
 }
