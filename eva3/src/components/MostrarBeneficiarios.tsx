@@ -1,9 +1,7 @@
 'use client'
 
 import { Beneficiario } from "@/interfaces/Ibeneficiario";
-import { table } from "console";
 import { useEffect, useState } from "react";
-import FormularioBeneficiario from "./FormularioBeneficiario";
 
 interface Props{
     traerBeneficiario: (b: Beneficiario, index: number)=> void
