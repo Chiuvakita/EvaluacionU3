@@ -7,6 +7,8 @@ export default function Home() {
   <div>
     <h1>Formulario Beneficiarios</h1>
     <FormularioBeneficiario/>
+    <h1></h1>
   </div>
+  
   );
 }
