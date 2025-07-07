@@ -34,8 +34,8 @@ const FormularioBeneficiario = () => {
     if (listado != null) {
       let listados = JSON.parse(listado);
       setBeneficiarios(listados);
-    }
-  }, []);
+    }else{}
+  }); //quitar
 
 
   const handleBeneficiario = (name: string, value: string | number) =>{

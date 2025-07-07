@@ -18,10 +18,11 @@ const MostrarBeneficiarios = (props: Props)=>{
             let listado = JSON.parse(listadoStr)
             setBeneficiarios(listado)
         }
-    },[])
+    })
 
     //eliminar
     const eliminarBeneficiario = (index:number)=>{
+        if(!window.confirm("seguro que deseas eliminar?")) return
         const nuevaLista= beneficiarios.filter((_,i)=>i !== index)
         setBeneficiarios(nuevaLista)
         const miStorage = window.localStorage
