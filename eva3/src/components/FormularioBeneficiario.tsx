@@ -1,25 +1,26 @@
 'use client'
 import { Beneficiario } from "@/interfaces/Ibeneficiario";
 import { useEffect, useState } from "react";
-import MostrarBeneficiarios from "@/components/MostrarBeneficiarios";
+
+interface Props {
+  beneficiarios:Beneficiario[],
+  setBeneficiarios:(b:Beneficiario[])=>void
+  beneficiarioEditar:Beneficiario|null
+  indiceEditar:number|null
+  limpiarEdicion:() =>void
+}
 
 const initialState:Beneficiario = {
   nombre:"",
-  edad:1,
+  edad:"",
   genero:"",
   observaciones:"",
   fIngreso:""
 }
 
-const FormularioBeneficiario = () => {
-  const [indiceEditar,setIndiceEditar] = useState<number | null>(null)
-  const traerBeneficiario = (b: Beneficiario, index: number) => {
-    setBeneficiario(b)
-    setIndiceEditar(index)
-  }
+const FormularioBeneficiario = (props:Props) => {
+  const [beneficiario,setBeneficiario] = useState(initialState)
 
-  const[beneficiario, setBeneficiario] = useState(initialState);
-  const[beneficiarios, setBeneficiarios] = useState<Beneficiario[]>([]);
 
   //estado de los erroes
   const [eNombre, setENombre] = useState("")
@@ -27,15 +28,11 @@ const FormularioBeneficiario = () => {
   const [eGenero, setEGenero] = useState("")
   const [eObservacion, setEObservacion] = useState("")
 
-
-  useEffect(() => {
-    const miStorage = window.localStorage;
-    let listado = miStorage.getItem("beneficiarios");
-    if (listado != null) {
-      let listados = JSON.parse(listado);
-      setBeneficiarios(listados);
-    }else{}
-  }); //quitar
+  useEffect(()=>{
+    if(props.beneficiarioEditar !== null){
+      setBeneficiario(props.beneficiarioEditar)
+    }
+  },[props.beneficiarioEditar])
 
 
   const handleBeneficiario = (name: string, value: string | number) =>{
@@ -86,7 +83,7 @@ const FormularioBeneficiario = () => {
       return
     }
 
-  if(beneficiario.edad <18){
+  if(Number(beneficiario.edad) <18|| beneficiario.edad === ""){
     setEEdad("La edad debe ser mayor a 18 años")
     return
   }
@@ -104,16 +101,17 @@ const FormularioBeneficiario = () => {
 
   //creacion de lista para poder guardar
   let nuevaLista
-  if(indiceEditar !== null){
-    nuevaLista = beneficiarios.map((b,i)=> i === indiceEditar ? beneficiario : b)}
+  if(props.indiceEditar !== null){
+    nuevaLista = props.beneficiarios.map((b,i)=> 
+      i === props.indiceEditar ? beneficiario : b)}
       else{
-        nuevaLista = [...beneficiarios,beneficiario]
+        nuevaLista = [...props.beneficiarios,beneficiario]
       }
-  setBeneficiarios(nuevaLista)
+  props.setBeneficiarios(nuevaLista)
   window.localStorage.setItem("beneficiarios",JSON.stringify(nuevaLista))
 
   setBeneficiario(initialState)
-  setIndiceEditar(null)
+  props.limpiarEdicion()
   setENombre("")
   setEEdad("")
   setEGenero("")
@@ -136,16 +134,16 @@ const FormularioBeneficiario = () => {
         placeholder="Ingresar nombre"
         onChange={(e) => handleBeneficiario(e.currentTarget.name, e.currentTarget.value)}  
         /> <br />
-        <span style={{color:"red"}}>{eNombre}</span>
+        <span style={{color:"red"}}>{eNombre}</span><br />
 
         <label>Edad</label><br />
         <input type="number"
         name="edad"
         value={beneficiario.edad}
-        placeholder="Ingresar nombre" 
+        placeholder="Ingresar edad" 
         onChange={(e) => handleBeneficiario(e.currentTarget.name, Number(e.currentTarget.value))}
         /> <br />
-        <span style={{color:"red"}}>{eEdad}</span>
+        <span style={{color:"red"}}>{eEdad}</span><br />
 
 
         <label>Genero</label><br />
@@ -161,7 +159,7 @@ const FormularioBeneficiario = () => {
           <option value="Otro">Otro</option>
         </select>     
         <br />
-        <span style={{color:"red"}}>{eGenero}</span>
+        <span style={{color:"red"}}>{eGenero}</span><br />
 
         <label>ingresar observaciones</label><br />
         <textarea name="observaciones" 
@@ -169,7 +167,7 @@ const FormularioBeneficiario = () => {
         onChange={(e) => handleBeneficiario(e.currentTarget.name, e.currentTarget.value)}>
         </textarea>
         <br />
-        <span style={{color:"red"}}>{eObservacion}</span>
+        <span style={{color:"red"}}>{eObservacion}</span><br />
 
 
         <label>Ingresar fecha de ingreso</label><br />
@@ -177,20 +175,18 @@ const FormularioBeneficiario = () => {
         name="fIngreso"
         value={beneficiario.fIngreso}
         onChange={(e) => handleBeneficiario(e.currentTarget.name, e.currentTarget.value)}
-        /> <br />
+        /> <br /><br />
 
         <button type="submit">Registrar</button>
       </form>
       
-      {indiceEditar !== null && (
+      {props.indiceEditar !== null && (
       <div style={{ color: "orange", marginTop: 12 }}>
         Estás editando: {beneficiario.nombre}
       </div>
       )}
-
-      <MostrarBeneficiarios traerBeneficiario={traerBeneficiario} />
     </div>
-    
+  
   );
 
 };

@@ -1,39 +1,28 @@
 'use client'
 
 import { Beneficiario } from "@/interfaces/Ibeneficiario";
-import { useEffect, useState } from "react";
 
 interface Props{
+    beneficiarios:Beneficiario[],
+    setBeneficiarios:(b:Beneficiario[])=>void
     traerBeneficiario: (b: Beneficiario, index: number)=> void
 }
 
 const MostrarBeneficiarios = (props: Props)=>{
-    const [beneficiarios, setBeneficiarios]=useState<Beneficiario[]>([])
-
-    
-    useEffect(()=>{
-        const miStorage = window.localStorage
-        let listadoStr = miStorage.getItem("beneficiarios")
-        if(listadoStr != null){
-            let listado = JSON.parse(listadoStr)
-            setBeneficiarios(listado)
-        }
-    })
-
     //eliminar
     const eliminarBeneficiario = (index:number)=>{
         if(!window.confirm("seguro que deseas eliminar?")) return
-        const nuevaLista= beneficiarios.filter((_,i)=>i !== index)
-        setBeneficiarios(nuevaLista)
-        const miStorage = window.localStorage
-        miStorage.setItem("beneficiarios",JSON.stringify(nuevaLista))
+        const nuevaLista= props.beneficiarios.filter((_,i)=>i !== index)
+        props.setBeneficiarios(nuevaLista)
+        window.localStorage.setItem("beneficiarios", JSON.stringify(nuevaLista))
     }
 
     //editar
     const editarBeneficiario = (index:number)=>{
-        props.traerBeneficiario(beneficiarios[index],index)
+        if(props.traerBeneficiario){
+        props.traerBeneficiario(props.beneficiarios[index],index)
     }
-
+    }
     return(
         <table>
             <thead>
@@ -45,7 +34,7 @@ const MostrarBeneficiarios = (props: Props)=>{
                 </tr>
             </thead>
             <tbody>
-                {beneficiarios.map((b,index)=>(
+                {props.beneficiarios.map((b,index)=>(
                     <tr key={index}>
                         <td>{b.nombre}</td>
                         <td>{b.edad}</td>

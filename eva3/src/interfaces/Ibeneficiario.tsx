@@ -1,6 +1,6 @@
 export interface Beneficiario{
     nombre:string,
-    edad:number,
+    edad:number | "",
     genero:string,
     observaciones:string,
     fIngreso:string
