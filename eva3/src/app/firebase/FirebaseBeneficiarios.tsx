@@ -12,7 +12,7 @@ export const crearBeneficiario = async (beneficiario:Beneficiario) =>{
 };
 
 //leer
-export const leerBeneficiarioa = async () =>{
+export const leerBeneficiarios = async () =>{
     const querySnapshot = await getDocs(collection(db,coleccion))
     return querySnapshot.docs.map(docu=>({id: docu.id,...docu.data()}))
 };
@@ -20,3 +20,18 @@ export const leerBeneficiarioa = async () =>{
 //eliminar
 export const eliminarBeneficiario = async (id:string) =>{
 
+    return await deleteDoc(doc(db,coleccion, id))
+};
+
+//ediatr
+export const editarBeneficiario = async(id:string, datos:Beneficiario)=>{
+    const{id: _,...datosSinId}=datos
+    return await updateDoc(doc(db,coleccion,id),{...datosSinId})
+}
+//borrar todos
+export const borrarTodos = async()=>{
+    const querySnapshot = await getDocs(collection(db,coleccion))
+    for (const docu of querySnapshot.docs){
+        await deleteDoc(doc(db,coleccion,docu.id))
+    }
+}
