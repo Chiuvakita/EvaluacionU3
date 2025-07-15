@@ -1,4 +1,5 @@
 'use client'
+import { crearBeneficiario, editarBeneficiario } from "@/app/firebase/FirebaseBeneficiarios";
 import { Beneficiario } from "@/interfaces/Ibeneficiario";
 import { useEffect, useState } from "react";
 
@@ -76,7 +77,7 @@ const FormularioBeneficiario = (props:Props) => {
   
     }
   //registrar
-  const handleRegistrar = ()=> {
+  const handleRegistrar = async ()=> {
     //validaciones antes de guardarlo en el local storage
   if (beneficiario.nombre.length < 3) {
       setENombre("El nombre debe tener almenos 3 caracteres")
@@ -99,13 +100,15 @@ const FormularioBeneficiario = (props:Props) => {
     return
   }
 
-  //creacion de lista para poder guardar
+  //lista para guardar
   let nuevaLista
-  if(props.indiceEditar !== null){
+  if(props.indiceEditar !== null && props.beneficiarioEditar && props.beneficiarioEditar?.id){
+    await editarBeneficiario(props.beneficiarioEditar.id,beneficiario)
     nuevaLista = props.beneficiarios.map((b,i)=> 
-      i === props.indiceEditar ? beneficiario : b)}
-      else{
-        nuevaLista = [...props.beneficiarios,beneficiario]
+      i === props.indiceEditar?{...beneficiario,id:b.id}:b)
+  }else{
+        const docRef = await crearBeneficiario(beneficiario)
+        nuevaLista = [...props.beneficiarios, { ...beneficiario, id: docRef.id }]
       }
   props.setBeneficiarios(nuevaLista)
   window.localStorage.setItem("beneficiarios",JSON.stringify(nuevaLista))

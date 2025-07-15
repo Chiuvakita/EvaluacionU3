@@ -1,6 +1,7 @@
 'use client'
 
 import { Beneficiario } from "@/interfaces/Ibeneficiario";
+import { eliminarBeneficiariofire } from "@/app/firebase/FirebaseBeneficiarios";
 
 interface Props{
     beneficiarios:Beneficiario[],
@@ -10,11 +11,16 @@ interface Props{
 
 const MostrarBeneficiarios = (props: Props)=>{
     //eliminar
-    const eliminarBeneficiario = (index:number)=>{
+    const eliminarBeneficiariof = async (index:number)=>{
         if(!window.confirm("seguro que deseas eliminar?")) return
+        const item = props.beneficiarios[index];
+        if(item.id){
+            await eliminarBeneficiariofire(item.id);
+        }
         const nuevaLista= props.beneficiarios.filter((_,i)=>i !== index)
         props.setBeneficiarios(nuevaLista)
         window.localStorage.setItem("beneficiarios", JSON.stringify(nuevaLista))
+        alert("Beneficiario eliminado correctamente")
     }
 
     //editar
@@ -41,7 +47,7 @@ const MostrarBeneficiarios = (props: Props)=>{
                         <td>{b.genero}</td>
                         <td>
                             <button onClick={()=> editarBeneficiario(index)}>Editar Beneficiario</button>
-                            <button onClick={()=> eliminarBeneficiario(index)}>Eliminiar Beneficiario</button>
+                            <button onClick={()=> eliminarBeneficiariof(index)}>Eliminiar Beneficiario</button>
                         </td>
                     </tr>
                 ))}

@@ -18,7 +18,7 @@ export const leerBeneficiarios = async () =>{
 };
 
 //eliminar
-export const eliminarBeneficiario = async (id:string) =>{
+export const eliminarBeneficiariofire = async (id:string) =>{
 
     return await deleteDoc(doc(db,coleccion, id))
 };
