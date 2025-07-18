@@ -1,5 +1,5 @@
 'use client'
-import { crearBeneficiario, leerBeneficiarios } from "@/app/firebase/FirebaseBeneficiarios";
+import { borrarTodos, crearBeneficiario, leerBeneficiarios } from "@/app/firebase/FirebaseBeneficiarios";
 import { Beneficiario } from "@/interfaces/Ibeneficiario";
 import { Alef } from "next/font/google";
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ const TablaComparativa=({setBeneficiarios}:Props)=>{
 
     //pasar del local a la bd de firebase
     const migrarLocalAFire = async()=>{
-        if(navigator.onLine) {
+        if(!navigator.onLine) {
             alert("No hay conexion a internet")
             return}
         
@@ -47,7 +47,7 @@ const TablaComparativa=({setBeneficiarios}:Props)=>{
         setCargando(false)
     }
     //borrar los beneficiarios de la bd
-    const borrarTodos = async ()=>{
+    const borrarTodosDatos = async ()=>{
         if(window.confirm("Estas borrando todo, estas seguro?"))
             return
         await borrarTodos()
@@ -77,7 +77,7 @@ const TablaComparativa=({setBeneficiarios}:Props)=>{
         <h3>Datos De Firebase</h3>
         <div>
             <button onClick={migrarLocalAFire} disabled={carganod}>Subir Local a Firebase</button>
-            <button onClick={borrarTodos} disabled={carganod} style={{backgroundColor:"red"}}>BORRAR TODO</button>
+            <button onClick={borrarTodosDatos} disabled={carganod} style={{backgroundColor:"red"}}>BORRAR TODO</button>
             <button onClick={traerFirebase} disabled={carganod}>Actualizar desde Firebase</button>
         </div>
         <div>
