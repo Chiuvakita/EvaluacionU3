@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import FormularioBeneficiario from "../components/FormularioBeneficiario";
 import { Beneficiario } from "@/interfaces/Ibeneficiario";
 import MostrarBeneficiarios from "@/components/MostrarBeneficiarios";
-
+import TablaComparativa from "@/components/TablaComparativa";
 
 
 export default function Home() {
@@ -41,7 +41,7 @@ export default function Home() {
     setBeneficiarios={setBeneficiarios}
     traerBeneficiario={traerBeneficiario}
     />
-    <h1>Prueba de nueva rama</h1>
+    <TablaComparativa setBeneficiarios = {setBeneficiarios}/>
   </div>
   
   );

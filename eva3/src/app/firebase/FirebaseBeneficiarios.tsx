@@ -14,7 +14,7 @@ export const crearBeneficiario = async (beneficiario:Beneficiario) =>{
 //leer
 export const leerBeneficiarios = async () =>{
     const querySnapshot = await getDocs(collection(db,coleccion))
-    return querySnapshot.docs.map(docu=>({id: docu.id,...docu.data()}))
+    return querySnapshot.docs.map(docu=>({id: docu.id,...(docu.data() as Omit<Beneficiario,"id">)}))
 };
 
 //eliminar
