@@ -48,7 +48,7 @@ const TablaComparativa=({setBeneficiarios}:Props)=>{
     }
     //borrar los beneficiarios de la bd
     const borrarTodosDatos = async ()=>{
-        if(window.confirm("Estas borrando todo, estas seguro?"))
+        if(!window.confirm("Estas borrando todo, estas seguro?"))
             return
         await borrarTodos()
         setListaFirebase([])
