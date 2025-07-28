@@ -12,7 +12,7 @@ const TablaComparativa=({setBeneficiarios}:Props)=>{
     const [listaFirebase, setListaFirebase] = useState<Beneficiario[]>([])
     const [carganod, setCargando] = useState(false)
 
-    //llevar los datos haciaa firebvase
+    //llevar los datos hacia firebase
     const cargarFirebase = async ()=>{
         setCargando(true)
         try{
